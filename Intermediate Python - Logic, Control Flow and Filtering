@@ -61,3 +61,17 @@ print(np.logical_or(my_house > 18.5 ,your_house < 10))
 
 # Both my_house and your_house smaller than 11
 print(np.logical_and(my_house < 11 ,your_house < 11))
+------------------------------------------
+#example.4
+# Import cars data
+import pandas as pd
+cars = pd.read_csv('cars.csv', index_col = 0)
+
+# Extract drives_right column as Series: dr
+# print(cars)
+dr = cars['drives_right']
+# Use dr to subset cars: sel
+sel = cars[dr]
+
+# Print sel
+print(sel)
