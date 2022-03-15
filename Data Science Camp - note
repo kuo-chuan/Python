@@ -32,3 +32,11 @@ print([i for i in L if i > 5])
 A = [1,2,3]
 B = [i*2 for i in A]
 print(B) #[2,4,6]
+
+#Generator(生成器)
+#用來減少記憶體暫存，只會儲存現在資料與下筆資料
+B = (i*2 for i in A)
+print(B) # <Generator>
+print(next(B)) #2
+print(next(B)) #4
+print(next(B)) #6
