@@ -41,3 +41,13 @@ print(B) # <Generator>
 print(next(B)) #2
 print(next(B)) #4
 print(next(B)) #6
+
+#動態參數 *
+def sum(*a):
+  t=0
+  for i in a:
+    t= t+i
+  return t
+print(sum(1,2)) #3
+print(sum(1,2,3)) #6
+
