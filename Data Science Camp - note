@@ -35,6 +35,7 @@ print(B) #[2,4,6]
 
 #Generator(生成器)
 #用來減少記憶體暫存，只會儲存現在資料與下筆資料
+#使用時機，只會使用一次，沒有重複讀取的需求
 B = (i*2 for i in A)
 print(B) # <Generator>
 print(next(B)) #2
