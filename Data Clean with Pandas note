@@ -1,0 +1,70 @@
+-------------------------------------讀
+import pandas as pd
+df = pd.read_csv('mycsvfile.csv')
+print(df)
+
+------------------------------------觀察、統計
+df.head() / df.tail() / df.info() #行列大小類型 / df.shape #顯示(rows,columns) 
+df['Name'] / df['Name'][0:4] / df[['Name','Team']]
+
+------------------------------------排序
+df.sort_values("Name",ascending= False) #ascending預設為True
+
+-------------------------------------新增
+df.insert(3,column="sport",value="Basketball") #新增一個叫sport的column在第三個位置，裡面的值是"Basketball"
+
+
+------------------------------------刪除NA
+df.dropna(inplace=True) #刪除NaN #inplace=True為取代原pandas dataframe的意思
+df.dropna(how='all', inplace=True) #加上how='all'關鍵字參數，就可以將這筆所有欄位皆遺漏的資料刪除
+
+------------------------------------替換NA
+df.fillna(value='unknown', inplace=True) #inplace=True為取代原pandas dataframe的意思
+df = df.fillna(0, inplace=True) #把NaN的資料代換成0
+
+------------------------------------刪除重複資料
+drop_duplicates()：刪除一模一樣的資料
+df.drop_duplicates(inplace=True)
+df.drop_duplicates(['type', 'country'], inplace=True) #指定的欄位資料重複就刪除
+
+------------------------------------拆分欄位資料
+str()：截取欄位資料的部分字串。
+df['summary'] = df.description.str[0:31] #df[新欄位]=資料.欄位.str[範圍]
+split()：以分隔符號來拆分資料。
+df['listed'] = df.listed_in.str.split(',')
+df['listed1'] = df.listed.str.get(0) #把其中的資料再分別放到不同欄位
+
+------------------------------------資料型態處理
+print(df.dtypes)
+astype()：欄位資料轉型為自訂的資料型態。
+df['title'] = df['title'].astype('string') #將「標題」欄位轉型為字串
+
+to_numeric()：欄位資料轉型為數值。
+df['show_id'] = pd.to_numeric(df['show_id'], errors='coerce')  #將「show_id」欄位轉型為數值 #errors='coerce'只要碰到無法轉型的資料，就會填入「NaN」
+
+to_datetime()：欄位資料轉型為日期。
+df['date_added'] = pd.to_datetime(df['date_added']) #將「新增日期」欄位轉型為日期
+
+------------------------------------資料格式處理
+to_datetime(欄位名稱).dt.strftime()：將欄資料轉型為日期後，再進行格式化
+df['date_added'] = pd.to_datetime(df['date_added']).dt.strftime('%Y/%m/%d')
+
+round(decimals=小數位數)：四捨五入到自訂的小數位數。
+df['rating'] = df['rating'].round(decimals=0)  #四捨五入到整數位
+
+------------------------------------自訂函式清理資料
+apply()：套用自訂的資料清理函式。
+#西元年轉為民國年
+def convert_chinese_year(year):
+    return int(year)-1911
+df['release_year'] = df['release_year'].apply(convert_chinese_year)  #套用自訂函式
+
+#show_id欄位加上千分位符號
+df['show_id'] = df['show_id'].apply(lambda x:format(x,','))
+
+#在Pandas套件一讀取資料來源時，就進行資料型態與格式的處理
+df = pd.read_csv('mycsvfile.csv', converters={
+    'date_added': lambda x: pd.to_datetime(x),  #「新增日期」轉為日期型態
+    'release_year': convert_chinese_year,  #「上映年份」轉為民國年格式
+    'rating': lambda x:int(round(float(x), 0))  #「評價」欄位四捨五入且轉為整數型態
+})
