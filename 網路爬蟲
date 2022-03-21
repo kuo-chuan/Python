@@ -1,0 +1,6 @@
+import urllib.request
+import csv
+
+------------------------蒐集
+res = "檔案網址"
+urllib.request.urlretrieve(res,"檔案名稱")
